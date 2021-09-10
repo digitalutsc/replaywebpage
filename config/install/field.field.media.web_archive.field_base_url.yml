@@ -1,0 +1,23 @@
+uuid: c78048af-936b-4ee1-8121-d98d20f4a735
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_base_url
+    - media.type.web_archive
+  module:
+    - link
+id: media.web_archive.field_base_url
+field_name: field_base_url
+entity_type: media
+bundle: web_archive
+label: 'Base URL'
+description: "Base URL for player\_to start archive at."
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 16
+  title: 0
+field_type: link

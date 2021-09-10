@@ -1,0 +1,13 @@
+replaywebpage.index:
+  path: '/replay/index.html'
+  defaults:
+    _controller: '\Drupal\replaywebpage\Controller\JsWorkerController::serveindex'
+  requirements:
+    _permission: 'access content' 
+
+replaywebpage.sw:
+  path: '/replay/sw.js'
+  defaults:
+    _controller: '\Drupal\replaywebpage\Controller\JsWorkerController::servereplay'
+  requirements:
+    _permission: 'access content'

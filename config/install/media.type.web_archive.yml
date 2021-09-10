@@ -1,0 +1,13 @@
+uuid: f9bb723e-0e0a-4941-987b-ee3ec98bc7b0
+langcode: en
+status: true
+dependencies: {  }
+id: web_archive
+label: 'Web Archive'
+description: 'A web archive file.'
+source: file
+queue_thumbnail_downloads: false
+new_revision: false
+source_configuration:
+  source_field: field_media_file
+field_map: {  }

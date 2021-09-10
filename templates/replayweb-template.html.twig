@@ -1,0 +1,12 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display something.
+ *
+ * @ingroup themeable
+ */
+#}
+{{ attach_library('replaywebpage/replayweb') }}
+<div class="wrapper-class" style="height: {{height}}; width: {{width}};"> 
+  <replay-web-page noSandbox={{noSandbox}} replayBase="{{playerBase}}" source="{{warcSource}}" url="{{baseUrl}}"></replay-web-page>
+</div>
