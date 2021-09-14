@@ -103,7 +103,7 @@ class ReplayWebPageFormatter extends FileFormatterBase {
 
       $element = [
         '#theme' => 'replayweb_template',
-        '#playerBase' => 'https://drupalvm.test/replay/',
+        '#playerBase' => $GLOBALS['base_url'] . '/replay/',
         '#baseUrl' => $baseUrl,
         '#warcSource' => $url,
         '#height' => $height == 0 ? "100%" : $height . "px",
