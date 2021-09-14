@@ -7,7 +7,7 @@ use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\media\Entity\Media;
 use Drupal\file\Entity\File;
-use Drupal\Core\Field\Plugin\Field\FieldFormatter\EntityReferenceFormatterBase;
+use Drupal\file\Plugin\Field\FieldFormatter\FileFormatterBase;
 
 /**
  * Plugin implementation of the 'ReplayWebPage formatter' formatter.
@@ -16,11 +16,11 @@ use Drupal\Core\Field\Plugin\Field\FieldFormatter\EntityReferenceFormatterBase;
  *   id = "replaywebpage_formatter",
  *   label = @Translation("ReplayWebPage formatter"),
  *   field_types = {
- *     "entity_reference"
+ *     "file"
  *   }
  * )
  */
-class ReplayWebPageFormatter extends EntityReferenceFormatterBase {
+class ReplayWebPageFormatter extends FileFormatterBase {
 
   /**
    * {@inheritdoc}
@@ -83,8 +83,9 @@ class ReplayWebPageFormatter extends EntityReferenceFormatterBase {
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $element = [];
+    $media = $items->getEntity();
 
-    foreach ($this->getEntitiesToView($items, $langcode) as $delta => $media) {
+    if ($media->hasField('field_base_url') && $media->hasField('field_media_file')) {
       // get direct path to file  
       $fid = $media->getSource()->getSourceFieldValue($media);
       $file = File::load($fid);
@@ -100,7 +101,7 @@ class ReplayWebPageFormatter extends EntityReferenceFormatterBase {
       $fieldBaseUrl = $media->get('field_base_url')[0];
       $baseUrl = is_null($fieldBaseUrl) ? "" : $fieldBaseUrl->getString();
 
-      $element[$delta] = [
+      $element = [
         '#theme' => 'replayweb_template',
         '#playerBase' => 'https://drupalvm.test/replay/',
         '#baseUrl' => $baseUrl,
