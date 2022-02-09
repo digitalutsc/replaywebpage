@@ -10,7 +10,7 @@ Adds a field formatter to play web archive files using ReplayWeb.page.
 Download and enable module using file upload, Drush, or Composer
 
 ### Configuration ###
-1. Set the File field display of Web Archive media type to ReplayWebPage formatter on Structure › Media Types › Web Archive
+1. Set the File field display of Web Archive media type to `ReplayWebPage formatter` on Structure › Media Types › Web Archive
 › Manage display
 2. Add or modify a media field in a content type and enable Web Archive as a reference type
 
