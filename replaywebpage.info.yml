@@ -2,6 +2,6 @@ name: ReplayWebPage
 type: module
 description: Plays web archive files using ReplayWeb.page
 package: Custom
-core_version_requirement: ^8.8 || ^9 || ^10
+core_version_requirement: ^9.3 || ^10
 dependencies:
   - drupal:media
