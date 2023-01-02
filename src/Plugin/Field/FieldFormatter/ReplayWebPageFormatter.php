@@ -90,7 +90,7 @@ class ReplayWebPageFormatter extends FileFormatterBase {
       $fid = $media->getSource()->getSourceFieldValue($media);
       $file = File::load($fid);
       $uri = $file->getFileUri();
-      $url = file_create_url($uri);
+      $url = \Drupal::service('file_url_generator')->generateAbsoluteString($uri);
 
       // formatting 
       $height = $this->getSetting('max_height');
