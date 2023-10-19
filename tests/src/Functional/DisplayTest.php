@@ -63,7 +63,7 @@ class DisplayTest extends BrowserTestBase {
     $data = [];
     $data['fields[field_media_file][type]'] = 'replaywebpage_formatter';
     $this->submitForm($data, 'Save');
-    $this->assertSession()->pageTextContains('Your settings have been saved.');
+    $this->assertSession()->pageTextContainsOnce('Your settings have been saved.');
 
     // upload file 
     $this->drupalGet('media/add/web_archive');
@@ -73,7 +73,7 @@ class DisplayTest extends BrowserTestBase {
     $path = \Drupal::service('extension.list.module')->getPath('replaywebpage') . '/tests/files/wikipedia.wacz';
     $data['files[field_media_file_0]'] = $path;
     $this->submitForm($data, 'Save');
-    $this->assertSession()->pageTextContains('Web Archive Test has been created.');
+    $this->assertSession()->pageTextContainsOnce('Web Archive Test has been created.');
 
     // create content type
     $this->drupalGet('admin/structure/types/add');
@@ -114,7 +114,7 @@ class DisplayTest extends BrowserTestBase {
    */  
   public function testPlayerWarcDisplay() {
     $this->drupalGet('node/1');
-    $this->assertSession()->responseMatches('~https://cdn.jsdelivr.net/npm/replaywebpage@[\d\.]+/ui.js~');
+    $this->assertSession()->responseContains('~https://cdn.jsdelivr.net/npm/replaywebpage@[\d\.]+/ui.js~');
     $this->assertSession()->responseContains('wikipedia.wacz');
     $this->assertSession()->responseContains('https://en.wikipedia.org/wiki/Pok%C3%A9mon');
   }
