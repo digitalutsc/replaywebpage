@@ -83,12 +83,11 @@ class ReplayWebPageFormatter extends FileFormatterBase {
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $element = [];
-    $ent = $items->getEntity();
+     /** @var \Drupal\media\Entity\Media $media */
+    $media = $items->getEntity();
 
-    if ($ent->hasField('field_base_url') && $ent->hasField('field_media_file')) {
+    if ($media->hasField('field_base_url') && $media->hasField('field_media_file')) {
       // get direct path to file  
-       /** @var \Drupal\media\Entity\Media $media */
-      $media = $ent;
       $fid = $media->getSource()->getSourceFieldValue($media);
       $file = File::load($fid);
       $uri = $file->getFileUri();
