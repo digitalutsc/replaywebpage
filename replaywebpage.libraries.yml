@@ -1,20 +1,6 @@
-# Custom module library for general purposes.
-replaywebpage:
-  js:
-    js/replaywebpage.js: {}
-  css:
-    component:
-      css/replaywebpage.css: {}
-  dependencies:
-    - core/drupalSettings
-
+# ReplayWebPage Js Library
+# 1.8.13 ui.js and 1.8.13 sw.js (sw.js is in relative path replay/sw.js)
+# No need to declare sw.js explictly here
 replayweb:
-  version: 1.5
-  license:
-    name: AGPLv3
-    url: https://github.com/webrecorder/replayweb.page/blob/master/LICENSE
-    gpl-compatible: true
   js:
-    https://cdn.jsdelivr.net/npm/replaywebpage@1.5.0/ui.js: { preprocess: false, external: true, minified: true }
-
-
+    js/ui.js: {}
