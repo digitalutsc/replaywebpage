@@ -1,6 +1,10 @@
 # ReplayWebPage Js Library
-# 1.8.13 ui.js and 1.8.13 sw.js (sw.js is in relative path replay/sw.js)
-# No need to declare sw.js explictly here
+# 1.8.0 ui.js and 1.8.13 sw.js (sw.js is in relative path replay/sw.js)
 replayweb:
+  version: 1.8
+  license:
+    name: AGPLv3
+    url: https://github.com/webrecorder/replayweb.page/blob/master/LICENSE
+    gpl-compatible: true
   js:
-    js/ui.js: {}
+    https://cdn.jsdelivr.net/npm/replaywebpage@1.8.13/ui.js: { preprocess: false, external: true, minified: true }
