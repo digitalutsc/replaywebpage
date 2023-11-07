@@ -1,5 +1,5 @@
 # ReplayWeb.page Player #
-Adds a field formatter to play web archive files using ReplayWeb.page. 
+Adds a field formatter to play web archive files using [ReplayWeb.page](https://webrecorder.net/). 
 
 ## Setup and Usage ## 
 ### Requirements ###
