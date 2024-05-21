@@ -19,5 +19,9 @@ Download and enable module using file upload, Drush, or Composer
 2. Upload web archive file and set Base URL if applicable
 3. Attach to content
 
+### Private Filesytem and PHP-fpm Configuration ### 
+
+* If the module is setup in Drupal's private filesystem and Apache's php-fpm. the `SetEnv ap_trust_cgilike_cl` need to be added in `.htaccess`. Read more on this [at here](https://serverpilot.io/docs/how-to-send-content-length-response-headers-from-php/).
+
 ## Acknowledgements ##
 Some of the code in this repository is modified code based on [Strawberry Field](https://github.com/esmero/strawberryfield)'s implementation of a similar player. 
