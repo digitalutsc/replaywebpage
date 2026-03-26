@@ -37,8 +37,8 @@ class MediaInstallationTest extends BrowserTestBase {
   }
 
   /**
-   * Test that the Web Archive media type exists 
-   */  
+   * Test that the Web Archive media type exists .
+   */
   public function testMediaTypeExists() {
     $permissions = [
       'administer media types',
@@ -50,8 +50,8 @@ class MediaInstallationTest extends BrowserTestBase {
   }
 
   /**
-   * Test that the ReplayWebPage formatter exists
-   */  
+   * Test that the ReplayWebPage formatter exists.
+   */
   public function testFieldFormatterExists() {
     $permissions = [
       'administer media display',
@@ -59,6 +59,7 @@ class MediaInstallationTest extends BrowserTestBase {
     $user = $this->drupalCreateUser($permissions);
     $this->drupalLogin($user);
     $this->drupalGet('admin/structure/media/manage/web_archive/display');
+    // phpcs:ignore -- Unused variable $options.
     $options = $this->assertSession()->optionExists('edit-fields-field-media-file-type', 'ReplayWebPage formatter');
   }
 

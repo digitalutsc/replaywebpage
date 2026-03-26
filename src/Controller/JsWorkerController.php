@@ -5,8 +5,7 @@ namespace Drupal\replaywebpage\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\HttpFoundation\Response;
 
-
-// src: https://github.com/esmero/format_strawberryfield/blob/main/src/Controller/JsWorkerController.php 
+// src: https://github.com/esmero/format_strawberryfield/blob/main/src/Controller/JsWorkerController.php
 
 /**
  * A JS Worker Static JS controller.
@@ -54,4 +53,5 @@ EOD;
     return $response;
 
   }
+
 }

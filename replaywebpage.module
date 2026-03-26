@@ -22,7 +22,7 @@ function replaywebpage_theme() {
         'height' => NULL,
         'width' => NULL,
         'noSandbox' => NULL,
-        ],
+      ],
     ],
   ];
 }
