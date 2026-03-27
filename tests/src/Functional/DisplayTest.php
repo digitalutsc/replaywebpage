@@ -14,7 +14,7 @@ class DisplayTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stable';
+  protected $defaultTheme = 'stark';
 
   // phpcs:ignore -- Missing member variable doc comment AND Do not disable strict config schema checking in tests.
   protected $strictConfigSchema = FALSE;
