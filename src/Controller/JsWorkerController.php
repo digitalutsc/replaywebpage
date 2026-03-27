@@ -6,7 +6,6 @@ use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\HttpFoundation\Response;
 
 // src: https://github.com/esmero/format_strawberryfield/blob/main/src/Controller/JsWorkerController.php
-
 /**
  * A JS Worker Static JS controller.
  */
@@ -16,6 +15,7 @@ class JsWorkerController extends ControllerBase {
    * Serves 'statically' the replay web JS Worker file.
    *
    * @return \Symfony\Component\HttpFoundation\Response
+   *   The response.
    */
   public function servereplay() {
     $response = new Response(
@@ -30,6 +30,7 @@ class JsWorkerController extends ControllerBase {
    * Serves 'statically' Index to avoid failure while worker is warming up.
    *
    * @return \Symfony\Component\HttpFoundation\Response
+   *   The response.
    */
   public function serveindex() {
 

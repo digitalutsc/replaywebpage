@@ -32,6 +32,7 @@ class MediaInstallationTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
+  // phpcs:ignore -- Possible useless method overriding detected
   protected function setUp(): void {
     parent::setUp();
   }
