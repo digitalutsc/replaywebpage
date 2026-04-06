@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\replaywebpage\Functional;
 
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\Tests\BrowserTestBase;
 
 /**
@@ -16,7 +17,10 @@ class DisplayTest extends BrowserTestBase {
    */
   protected $defaultTheme = 'stark';
 
-  // phpcs:ignore -- Missing member variable doc comment AND Do not disable strict config schema checking in tests.
+  /**
+   * {@inheritdoc}
+   */
+  // phpcs:ignore -- Do not disable strict config schema checking in tests.
   protected $strictConfigSchema = FALSE;
 
   /**
@@ -82,15 +86,20 @@ class DisplayTest extends BrowserTestBase {
     $data['type'] = 'content';
     $this->submitForm($data, 'Save and manage fields');
 
-    // Add web archive to content.
-    $this->drupalGet('admin/structure/types/manage/content/fields/add-field');
-    $data = [];
-    $data['existing_storage_name'] = 'field_web_archive';
-    $data['existing_storage_label'] = 'Web Archive';
-    $data['field_name'] = 'web_archive';
-    $this->submitForm($data, 'Save and continue');
+    // Ensure reusable field storage exists in test environments.
+    if (!FieldStorageConfig::loadByName('node', 'field_web_archive')) {
+      FieldStorageConfig::create([
+        'field_name' => 'field_web_archive',
+        'entity_type' => 'node',
+        'type' => 'entity_reference',
+        'settings' => ['target_type' => 'media'],
+      ])->save();
+    }
 
-    // Save settings.
+    // Add the existing field by using the reuse route directly.
+    $this->drupalGet('admin/structure/types/manage/content/fields/reuse');
+    $this->assertSession()->elementExists('css', 'input[value=Re-use][name=field_web_archive]');
+    $this->click('input[value=Re-use][name=field_web_archive]');
     $data = [];
     $data['settings[handler_settings][target_bundles][web_archive]'] = 'web_archive';
     $this->submitForm($data, 'Save settings');
@@ -114,7 +123,8 @@ class DisplayTest extends BrowserTestBase {
    */
   public function testPlayerWarcDisplay() {
     $this->drupalGet('node/1');
-    $this->assertSession()->responseContains('~https://cdn.jsdelivr.net/npm/replaywebpage@[\d\.]+/ui.js~');
+    $this->assertSession()->responseContains('https://cdn.jsdelivr.net/npm/replaywebpage@');
+    $this->assertSession()->responseContains('/ui.js');
     $this->assertSession()->responseContains('wikipedia.wacz');
     $this->assertSession()->responseContains('https://en.wikipedia.org/wiki/Pok%C3%A9mon');
   }

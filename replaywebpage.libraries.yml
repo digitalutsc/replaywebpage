@@ -8,4 +8,3 @@ replayweb:
     gpl-compatible: true
   js:
     https://cdn.jsdelivr.net/npm/replaywebpage@1.8.14/ui.js: { preprocess: false, external: true, minified: true }
-    
