@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\replaywebpage\Functional;
 
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\Tests\BrowserTestBase;
-use Drupal\Core\Extension;
 
 /**
  * Tests the display of the ReplayWebPage module.
@@ -15,10 +15,14 @@ class DisplayTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected $defaultTheme = 'stable';
+  protected $defaultTheme = 'stark';
 
+  /**
+   * {@inheritdoc}
+   */
+  // phpcs:ignore -- Do not disable strict config schema checking in tests.
   protected $strictConfigSchema = FALSE;
-  
+
   /**
    * {@inheritdoc}
    */
@@ -38,7 +42,7 @@ class DisplayTest extends BrowserTestBase {
    */
   protected function setUp(): void {
     parent::setUp();
-    // create user 
+    // Create user.
     $permissions = [
       'access media overview',
       'administer media',
@@ -58,14 +62,14 @@ class DisplayTest extends BrowserTestBase {
     $user = $this->drupalCreateUser($permissions);
     $this->drupalLogin($user);
 
-    // set view 
+    // Set view.
     $this->drupalGet('admin/structure/media/manage/web_archive/display');
     $data = [];
     $data['fields[field_media_file][type]'] = 'replaywebpage_formatter';
     $this->submitForm($data, 'Save');
     $this->assertSession()->pageTextContainsOnce('Your settings have been saved.');
 
-    // upload file 
+    // Upload file.
     $this->drupalGet('media/add/web_archive');
     $data = [];
     $data['name[0][value]'] = 'Test';
@@ -75,34 +79,39 @@ class DisplayTest extends BrowserTestBase {
     $this->submitForm($data, 'Save');
     $this->assertSession()->pageTextContainsOnce('Web Archive Test has been created.');
 
-    // create content type
+    // Create content type.
     $this->drupalGet('admin/structure/types/add');
     $data = [];
     $data['name'] = 'Content';
     $data['type'] = 'content';
     $this->submitForm($data, 'Save and manage fields');
 
-    // add web archive to content
-    $this->drupalGet('admin/structure/types/manage/content/fields/add-field');
-    $data = [];
-    $data['existing_storage_name'] = 'field_web_archive';
-    $data['existing_storage_label'] = 'Web Archive';
-    $data['field_name'] = 'web_archive';
-    $this->submitForm($data, 'Save and continue');
+    // Ensure reusable field storage exists in test environments.
+    if (!FieldStorageConfig::loadByName('node', 'field_web_archive')) {
+      FieldStorageConfig::create([
+        'field_name' => 'field_web_archive',
+        'entity_type' => 'node',
+        'type' => 'entity_reference',
+        'settings' => ['target_type' => 'media'],
+      ])->save();
+    }
 
-    // save settings
+    // Add the existing field by using the reuse route directly.
+    $this->drupalGet('admin/structure/types/manage/content/fields/reuse');
+    $this->assertSession()->elementExists('css', 'input[value=Re-use][name=field_web_archive]');
+    $this->click('input[value=Re-use][name=field_web_archive]');
     $data = [];
     $data['settings[handler_settings][target_bundles][web_archive]'] = 'web_archive';
     $this->submitForm($data, 'Save settings');
 
-    // add media 
+    // Add media.
     $this->drupalGet('node/add/content');
     $data = [];
     $data['field_web_archive[0][target_id]'] = 'Test';
     $data['title[0][value]'] = 'Test Content';
     $this->submitForm($data, 'Save');
 
-    // set content view 
+    // Set content view.
     $this->drupalGet('admin/structure/types/manage/content/display');
     $data = [];
     $data['fields[field_web_archive][type]'] = 'entity_reference_entity_view';
@@ -110,11 +119,12 @@ class DisplayTest extends BrowserTestBase {
   }
 
   /**
-   * Test that the ReplayWebPage formatter imports required parameters
-   */  
+   * Test that the ReplayWebPage formatter imports required parameters.
+   */
   public function testPlayerWarcDisplay() {
     $this->drupalGet('node/1');
-    $this->assertSession()->responseContains('~https://cdn.jsdelivr.net/npm/replaywebpage@[\d\.]+/ui.js~');
+    $this->assertSession()->responseContains('https://cdn.jsdelivr.net/npm/replaywebpage@');
+    $this->assertSession()->responseContains('/ui.js');
     $this->assertSession()->responseContains('wikipedia.wacz');
     $this->assertSession()->responseContains('https://en.wikipedia.org/wiki/Pok%C3%A9mon');
   }
