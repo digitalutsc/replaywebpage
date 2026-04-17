@@ -4,8 +4,12 @@ namespace Drupal\replaywebpage\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\file\Entity\File;
 use Drupal\file\Plugin\Field\FieldFormatter\FileFormatterBase;
+
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\File\FileUrlGeneratorInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
 
 /**
  * Plugin implementation of the 'ReplayWebPage formatter' formatter.
@@ -19,6 +23,56 @@ use Drupal\file\Plugin\Field\FieldFormatter\FileFormatterBase;
  * )
  */
 class ReplayWebPageFormatter extends FileFormatterBase {
+
+  /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * The file URL generator.
+   *
+   * @var \Drupal\Core\File\FileUrlGeneratorInterface
+   */
+  protected $fileUrlGenerator;
+
+  /**
+   * Constructs a ReplayWebPageFormatter object.
+   */
+  public function __construct(
+    $plugin_id,
+    $plugin_definition,
+    FieldDefinitionInterface $field_definition,
+    array $settings,
+    $label,
+    $view_mode,
+    array $third_party_settings,
+    EntityTypeManagerInterface $entity_type_manager,
+    FileUrlGeneratorInterface $file_url_generator,
+  ) {
+    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
+    $this->entityTypeManager = $entity_type_manager;
+    $this->fileUrlGenerator = $file_url_generator;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $plugin_id,
+      $plugin_definition,
+      $configuration['field_definition'],
+      $configuration['settings'],
+      $configuration['label'],
+      $configuration['view_mode'],
+      $configuration['third_party_settings'],
+      $container->get('entity_type.manager'),
+      $container->get('file_url_generator')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -88,10 +142,10 @@ class ReplayWebPageFormatter extends FileFormatterBase {
       // Get direct path to file.
       $fid = $media->getSource()->getSourceFieldValue($media);
       // phpcs:ignore -- File::load calls should be avoided in classes, use dependency injection instead
-      $file = File::load($fid);
+      $file = $this->entityTypeManager->getStorage('file')->load($fid);
       $uri = $file->getFileUri();
       // phpcs:ignore -- \Drupal calls should be avoided in classes, use dependency injection instead
-      $url = \Drupal::service('file_url_generator')->generateAbsoluteString($uri);
+      $url = $this->fileUrlGenerator->generateAbsoluteString($uri);
 
       // Formatting.
       $height = $this->getSetting('max_height');
