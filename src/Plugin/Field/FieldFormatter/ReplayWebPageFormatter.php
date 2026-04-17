@@ -141,10 +141,8 @@ class ReplayWebPageFormatter extends FileFormatterBase {
     if ($media->hasField('field_base_url') && $media->hasField('field_media_file')) {
       // Get direct path to file.
       $fid = $media->getSource()->getSourceFieldValue($media);
-      // phpcs:ignore -- File::load calls should be avoided in classes, use dependency injection instead
       $file = $this->entityTypeManager->getStorage('file')->load($fid);
       $uri = $file->getFileUri();
-      // phpcs:ignore -- \Drupal calls should be avoided in classes, use dependency injection instead
       $url = $this->fileUrlGenerator->generateAbsoluteString($uri);
 
       // Formatting.
