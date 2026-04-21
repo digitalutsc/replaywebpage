@@ -30,14 +30,6 @@ class MediaInstallationTest extends BrowserTestBase {
   ];
 
   /**
-   * {@inheritdoc}
-   */
-  // phpcs:ignore -- Possible useless method overriding detected
-  protected function setUp(): void {
-    parent::setUp();
-  }
-
-  /**
    * Test that the Web Archive media type exists .
    */
   public function testMediaTypeExists() {
@@ -60,8 +52,7 @@ class MediaInstallationTest extends BrowserTestBase {
     $user = $this->drupalCreateUser($permissions);
     $this->drupalLogin($user);
     $this->drupalGet('admin/structure/media/manage/web_archive/display');
-    // phpcs:ignore -- Unused variable $options.
-    $options = $this->assertSession()->optionExists('edit-fields-field-media-file-type', 'ReplayWebPage formatter');
+    $this->assertSession()->optionExists('edit-fields-field-media-file-type', 'ReplayWebPage formatter');
   }
 
 }
